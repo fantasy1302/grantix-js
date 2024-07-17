@@ -1,0 +1,72 @@
+{
+  "name": "headstartwp/headstartwp",
+  "description": "10up Headless WordPress API Plugin",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "10up",
+      "email": "info@10up.com"
+    }
+  ],
+  "require": {
+    "php": ">=8"
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "wordpress/wordpress-develop",
+        "version": "dev-trunk",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/WordPress/wordpress-develop",
+          "reference": "trunk"
+        }
+      }
+    },
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*",
+        "wpackagist-theme/*"
+      ]
+    }
+  ],
+  "require-dev": {
+    "10up/phpcs-composer": "3.0.0",
+    "giacocorsiglia/wordpress-stubs": "^5.1",
+    "yoast/wp-test-utils": "^1.2",
+    "php-stubs/wordpress-stubs": "^6.1",
+    "php-stubs/wordpress-tests-stubs": "^6.1",
+    "wordpress/wordpress-develop": "dev-trunk",
+    "yoast/wordpress-seo": "^22.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "HeadlessWP\\": "includes/classes/"
+    }
+  },
+  "scripts": {
+    "lint": "./vendor/bin/phpcs --standard=phpcs.xml",
+    "lint-fix": "./vendor/bin/phpcbf --standard=phpcs.xml",
+    "post-install-cmd": [
+      "php -r \"copy('vendor/wordpress/wordpress-develop/wp-tests-config-sample.php', 'vendor/wordpress/wordpress-develop/wp-tests-config.php');\""
+    ],
+    "clean": "rm -rf ./vendor && rm -rf ./composer.lock && composer install"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "composer/installers": true
+    }
+  },
+  "extra": {
+    "installer-paths": {
+      "vendor/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    }
+  }
+}
